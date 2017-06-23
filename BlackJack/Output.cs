@@ -24,14 +24,15 @@ namespace BlackJack
 
         }
 
+        
         internal void GameInitialization() //new game initialization
         {
             PlayerCountCards = 0;
             EnemyCountCards = 0;
             PlayerScore = 0;
             EnemyScore = 0;
-            PlayerDeck = new int[Engine.MAX_NUM_CARDS];
-            EnemyDeck = new int[Engine.MAX_NUM_CARDS];
+            PlayerDeck = new int[GameEngine.MAX_NUM_CARDS];
+            EnemyDeck = new int[GameEngine.MAX_NUM_CARDS];
             Deck = Engine.GetSuit();
         }
         internal void StartGame()
@@ -45,7 +46,7 @@ namespace BlackJack
 
         void Game()//response to a choice
         {
-            while (PlayerScore < Engine.WIN_SCORE && EnemyScore < Engine.WIN_SCORE)
+            while (PlayerScore < GameEngine.WIN_SCORE && EnemyScore < GameEngine.WIN_SCORE)
             {
                 string key = Console.ReadKey().Key.ToString();
 
@@ -55,7 +56,7 @@ namespace BlackJack
                     PlayerDeck[PlayerCountCards] = Deck.Pop();
                     PlayerCountCards++;
                     PlayerScore = Engine.ScoreComputing(PlayerDeck);
-                    if (EnemyScore < Engine.ENEMY_STOP_SCORE)
+                    if (EnemyScore < GameEngine.ENEMY_STOP_SCORE)
                     {
                         EnemyCardChoice();
                     }
@@ -69,7 +70,7 @@ namespace BlackJack
                 if (key == ConsoleKey.Enter.ToString())
                 {
                     Console.Clear();
-                    while (EnemyScore < Engine.ENEMY_STOP_SCORE)
+                    while (EnemyScore < GameEngine.ENEMY_STOP_SCORE)
                     {
                         EnemyCardChoice();
                     }
@@ -86,23 +87,23 @@ namespace BlackJack
         }
         void ShowWinner() //the winner's conclusion
         {
-            if (EnemyScore > Engine.WIN_SCORE && PlayerScore < Engine.WIN_SCORE ||
-                PlayerScore == Engine.WIN_SCORE && EnemyScore != Engine.WIN_SCORE ||
-                PlayerScore > EnemyScore && PlayerScore <= Engine.WIN_SCORE)
+            if (EnemyScore > GameEngine.WIN_SCORE && PlayerScore < GameEngine.WIN_SCORE ||
+                PlayerScore == GameEngine.WIN_SCORE && EnemyScore != GameEngine.WIN_SCORE ||
+                PlayerScore > EnemyScore && PlayerScore <= GameEngine.WIN_SCORE)
             {
                 PlayerWins++;
                 LoadView();
                 Console.WriteLine("You WIN!");
             }
-            else if (PlayerScore > Engine.WIN_SCORE && EnemyScore < Engine.WIN_SCORE || 
-                EnemyScore == Engine.WIN_SCORE && PlayerScore != Engine.WIN_SCORE ||
-                EnemyScore > PlayerScore && EnemyScore <= Engine.WIN_SCORE)
+            else if (PlayerScore > GameEngine.WIN_SCORE && EnemyScore < GameEngine.WIN_SCORE || 
+                EnemyScore == GameEngine.WIN_SCORE && PlayerScore != GameEngine.WIN_SCORE ||
+                EnemyScore > PlayerScore && EnemyScore <= GameEngine.WIN_SCORE)
             {
                 EnemyWins++;
                 LoadView();
                 Console.WriteLine("You  LOSE!");
             }
-            else if (EnemyScore == PlayerScore | EnemyScore > Engine.WIN_SCORE & PlayerScore > Engine.WIN_SCORE)
+            else if (EnemyScore == PlayerScore | EnemyScore > GameEngine.WIN_SCORE & PlayerScore > GameEngine.WIN_SCORE)
             {
                 LoadView();
                 Console.WriteLine("DRAW");

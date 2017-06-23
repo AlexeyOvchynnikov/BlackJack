@@ -8,25 +8,10 @@ namespace BlackJack
 {
     class GameEngine
     {
-        private int max_num_cards = 8; //maximum number of cards
-        private int enemy_stop_score = 17; //enemy stops score
-        private int win_score = 21;//main score of game
-
-        public int MAX_NUM_CARDS
-        {
-            get { return max_num_cards; }
-        }
-        public int ENEMY_STOP_SCORE
-        {
-            get { return enemy_stop_score; }
-        }
-        public int WIN_SCORE
-        {
-            get { return win_score; }
-        }
-
-
-        
+        public static int MAX_NUM_CARDS = 8; //maximum number of cards
+        public static int ENEMY_STOP_SCORE = 17; //enemy stops score
+        public static int WIN_SCORE = 21;//main score of game
+                
         internal Stack<int> GetSuit() //Deck generation
         {
             Stack<int> GeneratedSuit = new Stack<int>();
