@@ -65,8 +65,8 @@ namespace BlackJack
                             break;
                         }
                 }
-                
-                CardViewBlank.Insert(0,suit+":"+num+" \n");
+
+                CardViewBlank.Insert(0, suit + ":" + num + " \n");
             }
 
             for (int j = 0; j < count; j++)
@@ -80,7 +80,7 @@ namespace BlackJack
                     score += (id - 9);
             }
 
-                
+
             return CardViewBlank;
         }
 

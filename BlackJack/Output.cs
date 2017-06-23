@@ -11,7 +11,7 @@ namespace BlackJack
         CardView View;
         GameEngine Engine;
 
-        int PlayerCountCards, EnemyCountCards, PlayerScore, EnemyScore, PlayerWins=0, EnemyWins=0;
+        int PlayerCountCards, EnemyCountCards, PlayerScore, EnemyScore, PlayerWins = 0, EnemyWins = 0;
         int[] PlayerDeck;
         int[] EnemyDeck;
         Stack<int> Deck;
@@ -24,7 +24,7 @@ namespace BlackJack
 
         }
 
-        
+
         internal void GameInitialization() //new game initialization
         {
             PlayerCountCards = 0;
@@ -95,7 +95,7 @@ namespace BlackJack
                 LoadView();
                 Console.WriteLine("You WIN!");
             }
-            else if (PlayerScore > GameEngine.WIN_SCORE && EnemyScore < GameEngine.WIN_SCORE || 
+            else if (PlayerScore > GameEngine.WIN_SCORE && EnemyScore < GameEngine.WIN_SCORE ||
                 EnemyScore == GameEngine.WIN_SCORE && PlayerScore != GameEngine.WIN_SCORE ||
                 EnemyScore > PlayerScore && EnemyScore <= GameEngine.WIN_SCORE)
             {
@@ -131,11 +131,11 @@ namespace BlackJack
         {
             Console.WriteLine("________________\n   Enemy cards:");
             Console.WriteLine("________________\n");
-            Console.WriteLine(View.GetCardView(EnemyDeck, EnemyCountCards,out EnemyScore));
+            Console.WriteLine(View.GetCardView(EnemyDeck, EnemyCountCards, out EnemyScore));
             Console.WriteLine(" Enemy score:" + EnemyScore);
             Console.WriteLine("________________\n   Your cards:");
             Console.WriteLine("________________\n");
-            Console.WriteLine(View.GetCardView(PlayerDeck, PlayerCountCards,out PlayerScore));
+            Console.WriteLine(View.GetCardView(PlayerDeck, PlayerCountCards, out PlayerScore));
             Console.WriteLine(" Your score:" + PlayerScore + "\n__________________________________________________");
             Console.WriteLine("           Total score {0}:{1}", PlayerWins, EnemyWins);
             if (viewtype == 0)
