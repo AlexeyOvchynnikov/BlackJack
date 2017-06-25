@@ -11,6 +11,7 @@ namespace BlackJack
         public static int MAX_NUM_CARDS = 8; //maximum number of cards
         public static int ENEMY_STOP_SCORE = 17; //enemy stops score
         public static int WIN_SCORE = 21;//main score of game
+        public static string str = "11";
 
         internal Stack<int> GetSuit() //Deck generation
         {
