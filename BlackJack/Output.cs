@@ -31,8 +31,8 @@ namespace BlackJack
             EnemyCountCards = 0;
             PlayerScore = 0;
             EnemyScore = 0;
-            PlayerDeck = new int[GameEngine.MAX_N_C];
-            EnemyDeck = new int[GameEngine.MAX_N_C];
+            PlayerDeck = new int[GameEngine.MAX_NUM_CARDS];
+            EnemyDeck = new int[GameEngine.MAX_NUM_CARDS];
             Deck = Engine.GetSuit();
         }
         internal void StartGame()
