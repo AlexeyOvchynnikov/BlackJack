@@ -8,54 +8,161 @@ namespace BlackJack
 {
     class GameEngine
     {
-        public const int MAX_NUM_CARDS = 8; //maximum number of cards
-        public const int ENEMY_STOP_SCORE = 17; //enemy stops score
-        public const int WIN_SCORE = 21;//main score of game
+        private const int MAX_NUM_CARDS = 8; //maximum number of cards
+        private const int ENEMY_STOP_SCORE = 17; //enemy stops score
+        private const int WIN_SCORE = 21;//main score of game
+        private const int MAX_NUMBER_OF_CARDS = 52;//max number of cards in the deck
+        private CardView View;
+        private Output Out = new Output();
+        private StringBuilder _PlayerCards, _EnemyCards;
+        private int _PlayerScore, _EnemyScore, _PlayerWins = 0, _EnemyWins = 0;
+        private Stack<Card> _PlayerDeck;
+        private Stack<Card> _EnemyDeck;
+        private Stack<Card> Deck;
 
-        internal Stack<int> GetSuit() //Deck generation
+        public GameEngine()
         {
-            Stack<int> GeneratedSuit = new Stack<int>();
-            Random R = new Random();
-            GeneratedSuit.Push(R.Next(1, 52));
-            while (true)
-            {
-                int rand = R.Next(1, 52);
-                if (!GeneratedSuit.Contains(rand) && GeneratedSuit.Count != 51)
-                    GeneratedSuit.Push(rand);
-                if (GeneratedSuit.Count == 51)
-                    break;
-            }
-            return GeneratedSuit;
+            View = new CardView();
         }
 
-        internal int ScoreComputing(int[] _deck)
+        internal void NewGame()
         {
-            int id = 0;
-            int score = 0;
-            for (int i = 0; i < _deck.Length; i++)
+            GameInitialization();
+            GetPlayersCardsView();
+            Out.LoadView(_EnemyCards, _PlayerCards, _EnemyScore, _PlayerScore, _PlayerWins, _EnemyWins, 0);
+            Game();
+            Console.Clear();
+            ShowWinner();
+        }
+
+        private void GameInitialization() //new game initialization
+        {
+            _PlayerScore = 0;
+            _EnemyScore = 0;
+            _PlayerDeck = new Stack<Card>();
+            _EnemyDeck = new Stack<Card>();
+            Deck = GetDeck();
+        }
+
+        private void Game()//response to a choice
+        {
+            while (_PlayerScore < WIN_SCORE && _EnemyScore < WIN_SCORE)
             {
-                id = _deck[i];
-                if (id > 13 && id <= 26)
+                string key = Console.ReadKey().Key.ToString();
+
+                if (key == ConsoleKey.Spacebar.ToString())
                 {
-                    id -= 13;
+                    Console.Clear();
+                    _PlayerDeck.Push(Deck.Pop());
+                    _PlayerScore = ScoreComputing(_PlayerDeck);
+                    if (_EnemyScore < ENEMY_STOP_SCORE)
+                    {
+                        EnemyCardChoice();
+                    }
+                    GetPlayersCardsView();
+                    Out.LoadView(_EnemyCards, _PlayerCards, _EnemyScore, _PlayerScore, _PlayerWins, _EnemyWins, 0);
+
                 }
-                if (id > 26 && id <= 39)
+                if (key == ConsoleKey.Escape.ToString())
                 {
-                    id -= 26;
+                    Environment.Exit(0);
                 }
-                if (id > 39 && id <= 52)
+                if (key == ConsoleKey.Enter.ToString())
                 {
-                    id -= 39;
+                    Console.Clear();
+                    while (_EnemyScore < ENEMY_STOP_SCORE)
+                    {
+                        EnemyCardChoice();
+                    }
+                    ShowWinner();
                 }
-                // Computing player's score  
-                if (id <= 10)
-                    score += id;
-                else
-                    score += (id - 9);
+            }
+        }
+        private void GetPlayersCardsView()
+        {
+            View.GetPlayersCardsView(out _EnemyCards, out _PlayerCards, _EnemyDeck, _PlayerDeck);
+        }
+
+        private Stack<Card> GetDeck() //Deck generation
+        {
+            Stack<Card> GeneratedDeck = new Stack<Card>();
+            Random randCardNumber = new Random();
+            Random randCardSuit = new Random(DateTime.Now.Millisecond);
+            Card newCard = null;
+            int CardCounter = 0;
+            while (CardCounter < MAX_NUMBER_OF_CARDS)
+            {
+                int CardNumberID = randCardNumber.Next(Card.minCardNumID, Card.maxCardNumID);
+                int CardSuitID = randCardSuit.Next(Card.minCardSuitID, Card.maxCardSuitID);
+                newCard = new Card(CardNumberID, CardSuitID);
+
+                if (!GeneratedDeck.Contains(newCard))
+                {
+                    CardCounter++;
+                    GeneratedDeck.Push(newCard);
+                }
+            }
+            return GeneratedDeck;
+        }
+
+
+        private void EnemyCardChoice()
+        {
+            _EnemyDeck.Push(Deck.Pop());
+            _EnemyScore = ScoreComputing(_EnemyDeck);
+        }
+
+        private void ShowWinner() //the winner's conclusion
+        {
+            if (_EnemyScore > WIN_SCORE && _PlayerScore < WIN_SCORE ||
+                _PlayerScore == WIN_SCORE && _EnemyScore != WIN_SCORE ||
+                _PlayerScore > _EnemyScore && _PlayerScore <= WIN_SCORE)
+            {
+                _PlayerWins++;
+                GetPlayersCardsView();
+                Out.LoadView(_EnemyCards, _PlayerCards, _EnemyScore, _PlayerScore, _PlayerWins, _EnemyWins);
+                Out.Win();
+            }if (_PlayerScore > WIN_SCORE && _EnemyScore < WIN_SCORE ||
+                _EnemyScore == WIN_SCORE && _PlayerScore != WIN_SCORE ||
+                _EnemyScore > _PlayerScore && _EnemyScore <= WIN_SCORE)
+            {
+                _EnemyWins++;
+                GetPlayersCardsView();
+                Out.LoadView(_EnemyCards, _PlayerCards, _EnemyScore, _PlayerScore, _PlayerWins, _EnemyWins);
+                Out.Lose();
+            }if (_EnemyScore == _PlayerScore | _EnemyScore > WIN_SCORE & _PlayerScore > WIN_SCORE)
+            {
+                Out.LoadView(_EnemyCards, _PlayerCards, _EnemyScore, _PlayerScore, _PlayerWins, _EnemyWins);
+                GetPlayersCardsView();
+                Out.Draw();
+            }
+
+            Out.ChoiceOfActions();
+
+            while (true)
+            {
+                string key = Console.ReadKey().Key.ToString();
+
+                if (key == ConsoleKey.Escape.ToString())
+                {
+                    Environment.Exit(0);
+                }
+                if (key == ConsoleKey.Enter.ToString())
+                {
+                    Console.Clear();
+                    NewGame();
+                }
+            }
+        }
+
+        private int ScoreComputing(Stack<Card> deck)
+        {
+            int score = 0;
+            foreach (Card c in deck)
+            {
+                score += c.Score;
             }
             return score;
-
-
         }
 
     }

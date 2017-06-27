@@ -10,8 +10,8 @@ namespace BlackJack
         static void Main(string[] args)
         {
             Console.Title = "Black Jack";
-            Output Game = new Output();
-            Game.StartGame();
+            GameEngine Game = new GameEngine();
+            Game.NewGame();
         }
     }
 }
