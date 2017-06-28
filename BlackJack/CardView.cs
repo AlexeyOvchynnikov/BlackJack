@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BlackJack
 {
-    class CardView
+    internal sealed class CardView
     {
-        internal StringBuilder GetCardView(Stack<Card> Deck)
+        internal StringBuilder GetCardView(Deck Deck)
         {
-            Stack<Card> deck = Deck;
+            Deck deck = Deck;
             StringBuilder CardViewBlank = new StringBuilder();
 
             foreach (Card c in deck)
@@ -20,7 +20,7 @@ namespace BlackJack
             return CardViewBlank;
         }
 
-        internal void GetPlayersCardsView(out StringBuilder _EnemyCards, out  StringBuilder _PlayerCards, Stack<Card> _EnemyDeck, Stack<Card> _PlayerDeck)
+        internal void GetPlayersCardsView(out StringBuilder _EnemyCards, out  StringBuilder _PlayerCards, Deck _EnemyDeck, Deck _PlayerDeck)
         {
             _EnemyCards = GetCardView(_EnemyDeck);
             _PlayerCards = GetCardView(_PlayerDeck);

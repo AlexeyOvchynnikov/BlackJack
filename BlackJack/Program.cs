@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace BlackJack
 {
-    class Program
+     internal sealed class Program
     {
         static void Main(string[] args)
         {

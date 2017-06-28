@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 
 namespace BlackJack
 {
-    class Card
+    internal sealed class Card
     {
-        public const int minCardNumID = 0, maxCardNumID = 13, minCardSuitID = 13, maxCardSuitID = 17;
-        private int HashCode;
-        private string _Number;
-        private string _Suit;
-        private string[] NumberAndSuit = new string[17] { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "Spades", "Clubs", "Diamonds", "Hearts" };
+        public const int minCardNumID = 1, maxCardNumID = 14, minCardSuitID = 0, maxCardSuitID = 4;
+        private int _hashCode;
+        private _cardNumbers _number;
+        private _cardSuis _suit;
+        private enum _cardNumbers : int { A = 1, J = 11, Q, K }
+        private enum _cardSuis : int { Spades, Clubs, Diamonds, Hearts }
         public readonly int Score;
 
         public Card(int CardNumberID, int CardSuitID)
         {
             Score = CardNumberID + 1;
-            _Number = NumberAndSuit[CardNumberID];
-            _Suit = NumberAndSuit[CardSuitID];
-            HashCode = (CardNumberID + 1) * 10000 + CardSuitID;
+            _number = (_cardNumbers)CardNumberID;
+            _suit = (_cardSuis)CardSuitID;
+            _hashCode = (CardNumberID + 1) * 10000 + CardSuitID;
         }
         public override bool Equals(object obj)
         {
@@ -40,12 +41,12 @@ namespace BlackJack
 
         public override int GetHashCode()
         {
-            return HashCode;
+            return _hashCode;
         }
 
         public override string ToString()
         {
-            return _Suit + ":" + _Number;
+            return _suit + ":" + _number;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack
 {
-    class Output
+    internal sealed class Output
     {
         internal void LoadView(StringBuilder _EnemyCards, StringBuilder _PlayerCards,int _EnemyScore, int _PlayerScore,int _PlayerWins, int _EnemyWins, int viewtype = 1)
         {
@@ -40,6 +40,16 @@ namespace BlackJack
         internal void Draw()
         {
             Console.WriteLine("DRAW");
+        }
+
+        internal string ReadKeyToString()
+        {
+           return Console.ReadKey().Key.ToString();
+        }
+
+        internal void Clear()
+        {
+            Console.Clear();
         }
 
     }
