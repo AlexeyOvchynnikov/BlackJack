@@ -78,6 +78,7 @@ namespace BlackJack
                 }
             }
         }
+
         private void GetPlayersCardsView()
         {
             _view.GetPlayersCardsView(out _enemyCards, out _playerCards, _enemyDeck, _playerDeck);

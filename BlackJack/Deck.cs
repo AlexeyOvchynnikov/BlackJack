@@ -17,7 +17,6 @@ namespace BlackJack
 
         public void DeckGeneration()
         {
-            _deck = new Stack<Card>();
             HashSet<Card> tempDeck = new HashSet<Card>();
             HashSet<int> mixCardsID = new HashSet<int>();
             for (int i = Card.minCardSuitID; i < Card.maxCardSuitID; i++)
