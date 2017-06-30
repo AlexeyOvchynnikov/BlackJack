@@ -1,33 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJack
 {
     internal sealed class GameEngine
     {
-        private const int MAX_NUM_CARDS = 8; //maximum number of cards
-        private const int ENEMY_STOP_SCORE = 17; //enemy stops score
-        private const int WIN_SCORE = 21;//main score of game
         private Deck _deck;
-        private CardView _view;
         private Output _out = new Output();
         private StringBuilder _playerCards, _enemyCards;
         private int _playerScore, _enemyScore, _playerWins = 0, _enemyWins = 0;
-        private Deck _playerDeck;
-        private Deck _enemyDeck;
-
-        internal GameEngine()
-        {
-            _view = new CardView();
-        }
+        
 
         internal void NewGame()
         {
             GameInitialization();
-            GetPlayersCardsView();
             _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, 0);
             Game();
             _out.Clear();
@@ -38,39 +24,39 @@ namespace BlackJack
         {
             _playerScore = 0;
             _enemyScore = 0;
-            _playerDeck = new Deck();
-            _enemyDeck = new Deck();
             _deck = new Deck();
-            _deck.DeckGeneration();
+            _playerCards = new StringBuilder();
+            _enemyCards = new StringBuilder();
         }
 
         private void Game()//response to a choice
         {
-            while (_playerScore < WIN_SCORE && _enemyScore < WIN_SCORE)
+            while (_playerScore < GameData.WIN_SCORE && _enemyScore < GameData.WIN_SCORE)
             {
                 string key = _out.ReadKeyToString();
 
-                if (key == ConsoleKey.Spacebar.ToString())
+                if (_out.KeyIsSpacebar(key))
                 {
                     _out.Clear();
-                    _playerDeck.Push(_deck.Pop());
-                    _playerScore = ScoreComputing(_playerDeck);
-                    if (_enemyScore < ENEMY_STOP_SCORE)
+                    Card card = _deck.Pop();
+                    ScoreComputing(card, ref _playerScore);
+                    _playerCards.Insert(_playerCards.Length, card + "\n");
+
+                    if (_enemyScore < GameData.ENEMY_STOP_SCORE)
                     {
                         EnemyCardChoice();
                     }
-                    GetPlayersCardsView();
                     _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, 0);
 
                 }
-                if (key == ConsoleKey.Escape.ToString())
+                if (_out.KeyIsEscape(key))
                 {
                     Environment.Exit(0);
                 }
-                if (key == ConsoleKey.Enter.ToString())
+                if (_out.KeyIsEnter(key))
                 {
                     _out.Clear();
-                    while (_enemyScore < ENEMY_STOP_SCORE)
+                    while (_enemyScore < GameData.ENEMY_STOP_SCORE)
                     {
                         EnemyCardChoice();
                     }
@@ -78,40 +64,33 @@ namespace BlackJack
                 }
             }
         }
-
-        private void GetPlayersCardsView()
-        {
-            _view.GetPlayersCardsView(out _enemyCards, out _playerCards, _enemyDeck, _playerDeck);
-        }
         
         private void EnemyCardChoice()
         {
-            _enemyDeck.Push(_deck.Pop());
-            _enemyScore = ScoreComputing(_enemyDeck);
+            Card card = _deck.Pop();
+            ScoreComputing(card, ref _enemyScore);
+            _enemyCards.Insert(_enemyCards.Length, card + "\n");
         }
 
         private void ShowWinner() //the winner's conclusion
         {
-            if (_enemyScore > WIN_SCORE && _playerScore < WIN_SCORE ||
-                _playerScore == WIN_SCORE && _enemyScore != WIN_SCORE ||
-                _playerScore > _enemyScore && _playerScore <= WIN_SCORE)
+            if (_enemyScore > GameData.WIN_SCORE && _playerScore < GameData.WIN_SCORE ||
+                _playerScore == GameData.WIN_SCORE && _enemyScore != GameData.WIN_SCORE ||
+                _playerScore > _enemyScore && _playerScore <= GameData.WIN_SCORE)
             {
                 _playerWins++;
-                GetPlayersCardsView();
                 _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins);
                 _out.Win();
-            }if (_playerScore > WIN_SCORE && _enemyScore < WIN_SCORE ||
-                _enemyScore == WIN_SCORE && _playerScore != WIN_SCORE ||
-                _enemyScore > _playerScore && _enemyScore <= WIN_SCORE)
+            }if (_playerScore > GameData.WIN_SCORE && _enemyScore < GameData.WIN_SCORE ||
+                _enemyScore == GameData.WIN_SCORE && _playerScore != GameData.WIN_SCORE ||
+                _enemyScore > _playerScore && _enemyScore <= GameData.WIN_SCORE)
             {
                 _enemyWins++;
-                GetPlayersCardsView();
                 _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins);
                 _out.Lose();
-            }if (_enemyScore == _playerScore | _enemyScore > WIN_SCORE & _playerScore > WIN_SCORE)
+            }if (_enemyScore == _playerScore | _enemyScore > GameData.WIN_SCORE & _playerScore > GameData.WIN_SCORE)
             {
                 _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins);
-                GetPlayersCardsView();
                 _out.Draw();
             }
 
@@ -133,14 +112,9 @@ namespace BlackJack
             }
         }
 
-        private int ScoreComputing(Deck deck)
+        private void ScoreComputing(Card card , ref int score)
         {
-            int score = 0;
-            foreach (Card c in deck)
-            {
-                score += c.Score;
-            }
-            return score;
+                score += card.Score;
         }
 
     }

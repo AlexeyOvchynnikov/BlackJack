@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BlackJack
 {
     internal sealed class Output
     {
-        internal void LoadView(StringBuilder _EnemyCards, StringBuilder _PlayerCards,int _EnemyScore, int _PlayerScore,int _PlayerWins, int _EnemyWins, int viewtype = 1)
+        internal void LoadView(StringBuilder _EnemyCards, StringBuilder _PlayerCards, int _EnemyScore, int _PlayerScore, int _PlayerWins, int _EnemyWins, int viewtype = 1)
         {
             Console.WriteLine("________________\n   Enemy cards:");
             Console.WriteLine("________________\n");
@@ -44,9 +41,21 @@ namespace BlackJack
 
         internal string ReadKeyToString()
         {
-           return Console.ReadKey().Key.ToString();
+            return Console.ReadKey().Key.ToString();
         }
 
+        internal bool KeyIsSpacebar(string key)
+        {
+            return key == ConsoleKey.Spacebar.ToString();
+        }
+        internal bool KeyIsEscape(string key)
+        {
+            return key == ConsoleKey.Escape.ToString();
+        }
+        internal bool KeyIsEnter(string key)
+        {
+            return key == ConsoleKey.Enter.ToString();
+        }
         internal void Clear()
         {
             Console.Clear();
