@@ -4,15 +4,15 @@ namespace BlackJack
 {
     internal sealed class Card
     {
-        private _cardNumbers _number;
-        private _cardSuis _suit;
+        private СardNumbers _number;
+        private СardSuis _suit;
         public readonly int Score;
 
-        public Card(int CardNumberID, int CardSuitID)
+        public Card(int cardNumberID, int cardSuitID, int score)
         {
-            Score = CardNumberID < 10 ? CardNumberID:10;
-            _number = (_cardNumbers)CardNumberID;
-            _suit = (_cardSuis)CardSuitID;
+            Score = score;
+            _number = (СardNumbers)cardNumberID;
+            _suit = (СardSuis)cardSuitID;
         }
         
         public override string ToString()

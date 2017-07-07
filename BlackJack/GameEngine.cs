@@ -100,11 +100,11 @@ namespace BlackJack
             {
                 string key = _out.ReadKeyToString();
 
-                if (key == ConsoleKey.Escape.ToString())
+                if (_out.KeyIsEscape(key))
                 {
                     Environment.Exit(0);
                 }
-                if (key == ConsoleKey.Enter.ToString())
+                if (_out.KeyIsEnter(key))
                 {
                     _out.Clear();
                     NewGame();

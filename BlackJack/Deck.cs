@@ -15,7 +15,7 @@ namespace BlackJack
             {
                 for (int j = GameData.minCardNumID; j < GameData.maxCardNumID; j++)
                 {
-                    _deck.Add(new Card(j, i));
+                    _deck.Add(new Card(j, i, j < 10 ? j : 10));
                 }
             }
             MixDeck(_deck);
