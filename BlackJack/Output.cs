@@ -39,23 +39,6 @@ namespace BlackJack
             Console.WriteLine("DRAW");
         }
 
-        internal string ReadKeyToString()
-        {
-            return Console.ReadKey().Key.ToString();
-        }
-
-        internal bool KeyIsSpacebar(string key)
-        {
-            return key == ConsoleKey.Spacebar.ToString();
-        }
-        internal bool KeyIsEscape(string key)
-        {
-            return key == ConsoleKey.Escape.ToString();
-        }
-        internal bool KeyIsEnter(string key)
-        {
-            return key == ConsoleKey.Enter.ToString();
-        }
         internal void Clear()
         {
             Console.Clear();
