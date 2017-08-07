@@ -7,7 +7,7 @@ namespace BlackJack
     {
         private Deck _deck;
         private Output _out = new Output();
-        private KeysComparator _keysComparator=new KeysComparator();
+        private KeysComparator _keysComparator = new KeysComparator();
         private StringBuilder _playerCards, _enemyCards;
         private int _playerScore, _enemyScore, _playerWins = 0, _enemyWins = 0;
 
@@ -74,29 +74,57 @@ namespace BlackJack
             ScoreComputing(card, ref _enemyScore);
             _enemyCards.Insert(_enemyCards.Length, card + "\n");
         }
+
         // The winner's conclusion.
         private void ShowWinner()
         {
-            if (_enemyScore > GameData.WIN_SCORE && _playerScore < GameData.WIN_SCORE ||
-                _playerScore == GameData.WIN_SCORE && _enemyScore != GameData.WIN_SCORE ||
-                _playerScore > _enemyScore && _playerScore <= GameData.WIN_SCORE)
+            if (_playerScore < GameData.WIN_SCORE)
             {
-                _playerWins++;
-                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
-                _out.Win();
+                if (_enemyScore > GameData.WIN_SCORE)
+                {
+                    _playerWins++;
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
+                    _out.Win();
+                }
+                if (_playerScore == _enemyScore)
+                {
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
+                    _out.Draw();
+                }
+                if (_playerScore < _enemyScore && _enemyScore <= GameData.WIN_SCORE)
+                {
+                    _enemyWins++;
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
+                    _out.Lose();
+                }
             }
-            if (_playerScore > GameData.WIN_SCORE && _enemyScore < GameData.WIN_SCORE ||
-               _enemyScore == GameData.WIN_SCORE && _playerScore != GameData.WIN_SCORE ||
-               _enemyScore > _playerScore && _enemyScore <= GameData.WIN_SCORE)
+            if (_playerScore == GameData.WIN_SCORE)
             {
-                _enemyWins++;
-                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
-                _out.Lose();
+                if (_enemyScore != GameData.WIN_SCORE)
+                {
+                    _playerWins++;
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
+                    _out.Win();
+                }
+                if (_enemyScore == GameData.WIN_SCORE)
+                {
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
+                    _out.Draw();
+                }
             }
-            if (_enemyScore == _playerScore | _enemyScore > GameData.WIN_SCORE & _playerScore > GameData.WIN_SCORE)
+            if (_playerScore > GameData.WIN_SCORE)
             {
-                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
-                _out.Draw();
+                if (_enemyScore > GameData.WIN_SCORE)
+                {
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
+                    _out.Draw();
+                }
+                if (_enemyScore <= GameData.WIN_SCORE)
+                {
+                    _enemyWins++;
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
+                    _out.Lose();
+                }
             }
 
 
