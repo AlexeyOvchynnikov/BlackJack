@@ -11,11 +11,11 @@ namespace BlackJack
         public Deck() //Deck generation
         {
             _deck = new List<Card>();
-            for (int i = GameData.minCardSuitID; i < GameData.maxCardSuitID; i++)
+            for (var i = GameData.minCardSuitID; i < GameData.maxCardSuitID; i++)
             {
-                for (int j = GameData.minCardNumID; j < GameData.maxCardNumID; j++)
+                for (var j = GameData.minCardNumID; j < GameData.maxCardNumID; j++)
                 {
-                    _deck.Add(new Card(j, i, j < 10 ? j : 10));
+                    _deck.Add(new Card(j, i, j < GameData.maxCardScore ? j : GameData.maxCardScore));
                 }
             }
             MixDeck(_deck);

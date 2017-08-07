@@ -7,12 +7,12 @@ namespace BlackJack
     {
         private Deck _deck;
         private Output _out = new Output();
-        private KeysComparator _keyComp;
+        private KeysComparator _keysComparator=new KeysComparator();
         private StringBuilder _playerCards, _enemyCards;
         private int _playerScore, _enemyScore, _playerWins = 0, _enemyWins = 0;
 
-
-        private void GameInitialization() //new game initialization
+        // New game initialization.
+        private void GameInitialization()
         {
             _playerScore = 0;
             _enemyScore = 0;
@@ -24,20 +24,20 @@ namespace BlackJack
         internal void NewGame()
         {
             GameInitialization();
-            _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, 0);
+            _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewOnGame);
             Game();
             _out.Clear();
             ShowWinner();
             GameFinishActions();
         }
-
-        private void Game()//response to a choice
+        // Response to a choice.
+        private void Game()
         {
             while (_playerScore < GameData.WIN_SCORE && _enemyScore < GameData.WIN_SCORE)
             {
-                string key = _keyComp.ReadKeyToString();
+                string key = _keysComparator.ReadKeyToString();
 
-                if (_keyComp.KeyIsSpacebar(key))
+                if (_keysComparator.KeyIsSpacebar(key))
                 {
                     _out.Clear();
                     Card card = _deck.Pop();
@@ -48,14 +48,14 @@ namespace BlackJack
                     {
                         EnemyCardChoice();
                     }
-                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, 0);
+                    _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewOnGame);
 
                 }
-                if (_keyComp.KeyIsEscape(key))
+                if (_keysComparator.KeyIsEscape(key))
                 {
                     Environment.Exit(0);
                 }
-                if (_keyComp.KeyIsEnter(key))
+                if (_keysComparator.KeyIsEnter(key))
                 {
                     _out.Clear();
                     while (_enemyScore < GameData.ENEMY_STOP_SCORE)
@@ -74,15 +74,15 @@ namespace BlackJack
             ScoreComputing(card, ref _enemyScore);
             _enemyCards.Insert(_enemyCards.Length, card + "\n");
         }
-
-        private void ShowWinner() //the winner's conclusion
+        // The winner's conclusion.
+        private void ShowWinner()
         {
             if (_enemyScore > GameData.WIN_SCORE && _playerScore < GameData.WIN_SCORE ||
                 _playerScore == GameData.WIN_SCORE && _enemyScore != GameData.WIN_SCORE ||
                 _playerScore > _enemyScore && _playerScore <= GameData.WIN_SCORE)
             {
                 _playerWins++;
-                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins);
+                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
                 _out.Win();
             }
             if (_playerScore > GameData.WIN_SCORE && _enemyScore < GameData.WIN_SCORE ||
@@ -90,12 +90,12 @@ namespace BlackJack
                _enemyScore > _playerScore && _enemyScore <= GameData.WIN_SCORE)
             {
                 _enemyWins++;
-                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins);
+                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
                 _out.Lose();
             }
             if (_enemyScore == _playerScore | _enemyScore > GameData.WIN_SCORE & _playerScore > GameData.WIN_SCORE)
             {
-                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins);
+                _out.LoadView(_enemyCards, _playerCards, _enemyScore, _playerScore, _playerWins, _enemyWins, GameData.viewFinishGame);
                 _out.Draw();
             }
 
@@ -107,13 +107,13 @@ namespace BlackJack
 
             while (true)
             {
-                string key = _keyComp.ReadKeyToString();
+                string key = _keysComparator.ReadKeyToString();
 
-                if (_keyComp.KeyIsEscape(key))
+                if (_keysComparator.KeyIsEscape(key))
                 {
                     Environment.Exit(0);
                 }
-                if (_keyComp.KeyIsEnter(key))
+                if (_keysComparator.KeyIsEnter(key))
                 {
                     _out.Clear();
                     NewGame();

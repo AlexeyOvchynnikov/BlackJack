@@ -5,7 +5,8 @@ namespace BlackJack
 {
     internal sealed class Output
     {
-        internal void LoadView(StringBuilder _EnemyCards, StringBuilder _PlayerCards, int _EnemyScore, int _PlayerScore, int _PlayerWins, int _EnemyWins, int viewtype = 1)
+        internal void LoadView(StringBuilder _EnemyCards, StringBuilder _PlayerCards, 
+            int _EnemyScore, int _PlayerScore, int _PlayerWins, int _EnemyWins, int viewtype)
         {
             Console.WriteLine("________________\n   Enemy cards:");
             Console.WriteLine("________________\n");
